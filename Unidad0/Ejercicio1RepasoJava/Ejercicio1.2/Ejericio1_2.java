@@ -16,8 +16,6 @@ public class Ejericio1_2 {
                 num = num / i;
             }
         }
-        if (num > 2) {
-            System.out.println(num);
-        }
+        System.out.println(num);
     }
 }
