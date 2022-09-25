@@ -27,11 +27,11 @@ public class Ej02conRecord {
         libros.add(new LibroRecord("El italiano", 400, "Arturo Pérez Reverte"));
         libros.add(new LibroRecord("Línea de fuego", 688, "Arturo Pérez Reverte"));
 
-        /* for(LibroRecord l: libros)
+        for(LibroRecord l: libros)
         {
             System.out.println("Título: " + l.titulo());
             System.out.println("Autor: " + l.autor());
-        } */
+        }
 
         List numPagMas500 = libros.stream().filter(libro -> libro.numPaginas() > 500).collect(Collectors.toList());
         System.out.println("El numero de libros con mas de 500 paginas es de: " + numPagMas500.size());
@@ -41,14 +41,31 @@ public class Ej02conRecord {
         System.out.println("El numero de libros con mas de 500 paginas es de: " + numPagMenos300.size());
         System.out.println();
 
-        List<String> nomLibroMas500Pag = libros.stream().filter(libro -> libro.numPaginas() > 500).map(libro -> libro.titulo()).collect(Collectors.toList());
-
         System.out.println("Titulos de los libros de mas de 500 paginas:");
-        for (String titulo : nomLibroMas500Pag) {
-            System.out.println("- " + titulo);
-        }
+        libros.stream().filter(libro -> libro.numPaginas() > 500).map(libro -> libro.titulo()).forEach(titulo -> System.out.println("- " + titulo));
         System.out.println();
 
+        System.out.println("Titulos de los 3 libros con mas paginas: ");
+        libros.stream().sorted((l1, l2) -> Integer.compare(l2.numPaginas(), l1.numPaginas())).limit(3).map(libro -> libro.titulo()).forEach(titulo -> System.out.println("- " + titulo));
+        System.out.println();
 
+        System.out.println("Total de la suma de las paginas de todos los libros: ");
+        System.out.println(libros.stream().mapToInt(np -> np.numPaginas()).sum());
+        System.out.println();
+
+        System.out.println("Todos los libros que superen el promedio en cuanto a numero de paginas se refiere: ");
+        int media = 0;
+        libros.stream().mapToInt(l -> l.numPaginas() + media).forEach(System.out::println);
+        System.out.println();
+
+        System.out.println("Los autores de todos los libros:");
+        libros.stream().map(l -> l.autor()).distinct().forEach(System.out::println);
+        System.out.println();
+
+        System.out.println("Libro con el numero de paginas mayor:");
+        libros.stream().sorted((l1, l2) -> Integer.compare(l2.numPaginas(), l1.numPaginas())).limit(1).map(libro -> libro.titulo()).forEach(titulo -> System.out.println("- " + titulo));
+        System.out.println();
+
+        List<String> titulosLibros = libros.stream().map(l -> l.titulo()).collect(Collectors.toList());
     }
 }
