@@ -22,35 +22,27 @@ public class Ejercicio1_5 {
     }
 
     private static boolean esPrimo(int num) {
-        boolean esPrimo = true;
-
-        if (num <= 1) {
-            esPrimo = false;
+        if (num <= 1 || num % 2 == 0) {
+            return false;
         }
 
-        for (int i = 2; i != num && esPrimo; i++) {
-            if (num % i == 0 ) {
-                esPrimo = false;
+        for (int i = 3; i * i <= num; i+=2) {
+            if (num % i == 0) {
+                return false;
             }
         }
 
-        return esPrimo;
+        return true;
     }
 
     private static boolean esPalindromo(int num) {
-        boolean esPalindromo = true;
-        int numPal = num, sum = 0, r;
+        int numPal = num, inverso = 0;
 
         while (num > 0) {
-            r = num % 10;
-            sum = (sum * 10) + r;
+            inverso = (inverso * 10) + (num % 10);
             num = num / 10;
         }
 
-        if (numPal != sum) {
-            esPalindromo = false;
-        }
-
-        return esPalindromo;
+        return  numPal == inverso;
     }
 }
