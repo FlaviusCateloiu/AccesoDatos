@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Ej03LecturaFicherosTexto {
     public static void main(String[] args) {
@@ -47,8 +48,8 @@ public class Ej03LecturaFicherosTexto {
             System.out.println();
 
             System.out.println("- El promedio de existencias en almacen: ");
-
-
+            int sum = listaProductos.stream().mapToInt(i -> i.getSupplier()).sum();
+            System.out.println(sum / listaProductos.size());
             System.out.println();
 
         } catch (IOException ioe) {
