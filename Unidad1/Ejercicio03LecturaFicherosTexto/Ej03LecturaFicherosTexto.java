@@ -1,10 +1,7 @@
 import java.nio.file.Path;
 import java.nio.file.Files;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Ej03LecturaFicherosTexto {
@@ -48,7 +45,7 @@ public class Ej03LecturaFicherosTexto {
             System.out.println();
 
             System.out.println("- El promedio de existencias en almacen: ");
-            int sum = listaProductos.stream().mapToInt(i -> i.getSupplier()).sum();
+            int sum = listaProductos.stream().mapToInt(i -> i.getUnitsInStock()).sum();
             System.out.println(sum / listaProductos.size());
             System.out.println();
 
