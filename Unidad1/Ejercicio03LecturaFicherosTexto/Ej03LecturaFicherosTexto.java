@@ -51,7 +51,7 @@ public class Ej03LecturaFicherosTexto {
             System.out.println();
 
         } catch (IOException ioe) {
-            ioe.printStackTrace();
+            System.err.println("No se a podido encontrar el fichero del que realiza la lectura.");
         }
     }
 }

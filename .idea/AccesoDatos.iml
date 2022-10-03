@@ -13,6 +13,8 @@
       <sourceFolder url="file://$MODULE_DIR$/Unidad0/Ejercicio1RepasoJava/Ejercicio1.8" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Unidad0/Ejercicio2StreamsJava" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Unidad1/Ejercicio03LecturaFicherosTexto" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Unidad1/Ejercicio04EscribirFicheros/Ejercicio4.1" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Unidad1/Ejercicio04EscrituraFicheros" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
