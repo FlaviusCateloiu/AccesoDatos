@@ -38,6 +38,7 @@ public class Ej03LecturaFicherosTexto {
 
             System.out.println("- El numero de productos agrupados por proveedor: ");
 
+            System.out.println(listaProductos.stream().collect(Collectors.groupingBy(prod -> prod.getSupplier(), Collectors.counting())));
             System.out.println();
 
             System.out.println("- El producto con el precio unitario mas alto: ");
