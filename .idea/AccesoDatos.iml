@@ -18,6 +18,9 @@
       <sourceFolder url="file://$MODULE_DIR$/Unidad1/Ejercicio04EscribirFicheros/Ejercicio4.3" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Unidad1/Ejercicio04EscribirFicheros/Ejercicio4.4" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Unidad1/Ejercicio04EscrituraFicheros" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Unidad1/Ejercicio05Serializacion/Ejercicio5.1" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Unidad1/Ejercicio05Serializacion/Ejercicio5.2" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Unidad1/Ejercicio05Serializacion/Ejercicio5.3" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
