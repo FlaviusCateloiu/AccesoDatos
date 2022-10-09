@@ -38,4 +38,9 @@ public class Persona implements Serializable {
     public void setAnyoNacimiento(Date anyoNacimiento) {
         this.anyoNacimiento = anyoNacimiento;
     }
+
+    @Override
+    public String toString() {
+        return "Nombre: " + getNombre() + ", Email: " + getEmail() + " y Fecha de Nacimiento: " + getAnyoNacimiento();
+    }
 }

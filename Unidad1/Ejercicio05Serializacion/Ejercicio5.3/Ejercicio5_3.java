@@ -14,6 +14,8 @@ public class Ejercicio5_3 {
         Date fecha = null;
         Persona pers;
 
+        cargarPersonas(listaPersonas);
+
         do {
             System.out.printf("%s MENU AGENDA %s\n", "-".repeat(10), "-".repeat(10));
             System.out.println("1.- Introducir a una Persona.");
@@ -21,17 +23,17 @@ public class Ejercicio5_3 {
             System.out.println("3.- Salir del programa.");
             System.out.print("Introduce el numero de la opcion que quieres: ");
             op = sc.readLine();
+            System.out.println();
 
             switch (op) {
                 case "1":
-                    cargarPersonas(listaPersonas);
                     System.out.print("Introduce el nombre: ");
                     nombre = sc.readLine();
-                    System.out.println("Introudce el email: ");
+                    System.out.print("Introudce el email: ");
                     email = sc.readLine();
                     do {
                         try {
-                            System.out.println("Introduce la fecha de nacimiento con el formato dd/MM/yyyy: ");
+                            System.out.print("Introduce la fecha de nacimiento con el formato dd/MM/yyyy: ");
                             fechaNacimiento = sc.readLine();
 
                             fecha = new SimpleDateFormat("dd/MM/yyyy").parse(fechaNacimiento);
@@ -41,17 +43,29 @@ public class Ejercicio5_3 {
                             System.out.println("Formato de la fecha incorrecto.");
                         }
                     } while (formatoFecha);
+                    System.out.println();
 
                     pers = new Persona(nombre, email, fecha);
                     listaPersonas.add(pers);
                     guardarPersonas(listaPersonas);
                     break;
                 case "2":
+                    System.out.print("Introduce el nombre de la persona que buscar: ");
+                    nombre = sc.readLine();
+
+                    pers = buscarPersona(nombre, listaPersonas);
+
+                    if (pers == null) {
+                        System.out.println("Error, has introducido en nombre de una persona que no esta en la lista prueba a poner otro.");
+                    } else {
+                        System.out.println(pers);
+                    }
+                    System.out.println();
                     break;
                 case "3":
                     break;
                 default:
-                    System.err.println("Error has introducido una opcion del menu incorrecta.");
+                    System.out.println("Error has introducido una opcion del menu incorrecta.");
             }
 
         } while (!op.equals("3"));
@@ -82,5 +96,15 @@ public class Ejercicio5_3 {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static Persona buscarPersona(String nombrePersonaBuscar, ArrayList<Persona> listaPersonas) {
+        for (Persona persona : listaPersonas) {
+            if (persona.getNombre().equalsIgnoreCase(nombrePersonaBuscar)) {
+                return persona;
+            }
+        }
+
+        return null;
     }
 }
