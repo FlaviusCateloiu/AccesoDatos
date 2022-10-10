@@ -21,6 +21,7 @@
       <sourceFolder url="file://$MODULE_DIR$/Unidad1/Ejercicio05Serializacion/Ejercicio5.1" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Unidad1/Ejercicio05Serializacion/Ejercicio5.2" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Unidad1/Ejercicio05Serializacion/Ejercicio5.3" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Unidad1/Ejercicio06RandomAccessFile" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
