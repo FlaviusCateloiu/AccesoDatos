@@ -3,6 +3,7 @@ import java.io.InputStreamReader;
 
 public class Ejercicio6 {
     public static void main(String[] args) throws Exception {
+        /* http://puntocomnoesunlenguaje.blogspot.com/2013/06/java-ficheros-acceso-aleatorio.html */
         BufferedReader sc = new BufferedReader(new InputStreamReader(System.in));
         boolean supplierCorrecto;
         String nameProduct;
