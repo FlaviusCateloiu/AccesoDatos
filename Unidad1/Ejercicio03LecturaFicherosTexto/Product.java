@@ -89,6 +89,27 @@ public class Product implements Comparable<Product> {
         }
     }
 
+    public void writeFile(String rutaFichero, String nomProd, int supplierProd) {
+        Path rutaAlFichero = Path.of(rutaFichero);
+        String producto;
+        producto = Integer.toString(this.id) + ",";
+        producto = producto + this.name + ",";
+        producto = producto + Integer.toString(this.supplier) + ",";
+        producto = producto + Integer.toString(this.category) + ",,";
+        producto = producto + Double.toString(this.unitPrice) + ",";
+        producto = producto + Integer.toString(this.unitsInStock) + ",,,";
+
+        try {
+            if (Files.exists(rutaAlFichero)) {
+                Files.writeString(rutaAlFichero, "\n" + producto, StandardOpenOption.APPEND);
+            } else {
+                Files.writeString(rutaAlFichero, producto);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public String toString() {
         return "Product{" +
