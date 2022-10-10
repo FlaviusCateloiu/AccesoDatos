@@ -9,7 +9,7 @@ public class Ejercicio5_3 {
     public static void main(String[] args) throws Exception {
         BufferedReader sc = new BufferedReader(new InputStreamReader(System.in));
         ArrayList<Persona> listaPersonas = new ArrayList<>();
-        boolean formatoFecha;
+        boolean formatoFecha, personaRepetida;
         String op = "", nombre = "", email = "", fechaNacimiento = "";
         Date fecha = null;
         Persona pers;
@@ -29,6 +29,7 @@ public class Ejercicio5_3 {
                 case "1":
                     System.out.print("Introduce el nombre: ");
                     nombre = sc.readLine();
+
                     System.out.print("Introudce el email: ");
                     email = sc.readLine();
                     do {
@@ -45,6 +46,7 @@ public class Ejercicio5_3 {
                     } while (formatoFecha);
                     System.out.println();
 
+                    borrarPersona(listaPersonas, nombre);
                     pers = new Persona(nombre, email, fecha);
                     listaPersonas.add(pers);
                     guardarPersonas(listaPersonas);
@@ -94,7 +96,7 @@ public class Ejercicio5_3 {
                 listaPersonas.add(pers);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("No se a podido cargar el archivo con las personas.");
         }
     }
 
@@ -106,5 +108,9 @@ public class Ejercicio5_3 {
         }
 
         return null;
+    }
+
+    public static void borrarPersona(ArrayList<Persona> listaPersonas, String nombreBorrar) {
+        listaPersonas.removeIf(p -> p.getNombre().equalsIgnoreCase(nombreBorrar));
     }
 }
