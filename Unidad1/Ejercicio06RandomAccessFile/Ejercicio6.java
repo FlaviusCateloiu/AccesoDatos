@@ -4,23 +4,10 @@ import java.io.InputStreamReader;
 public class Ejercicio6 {
     public static void main(String[] args) throws Exception {
         /* http://puntocomnoesunlenguaje.blogspot.com/2013/06/java-ficheros-acceso-aleatorio.html */
+        Product producto = new Product(11, "Madera", 1, 11, 9.2, 9);
         BufferedReader sc = new BufferedReader(new InputStreamReader(System.in));
-        boolean supplierCorrecto;
-        String nameProduct;
-        int supplierProduct;
         String ruta = "Unidad1/Ejercicio06RandomAccessFile/productos2_0.csv";
 
-        System.out.print("Introduce el nombre del producto: ");
-        nameProduct = sc.readLine();
-        do {
-            supplierCorrecto = false;
-            try {
-                System.out.print("Introduce el nuevo supplier del producto: ");
-                supplierProduct = Integer.parseInt(sc.readLine());
-            } catch (Exception e) {
-                System.err.println("No has introducido un numero para el supplier.");
-                supplierCorrecto = true;
-            }
-        } while(supplierCorrecto);
+        producto.writeFile(ruta);
     }
 }

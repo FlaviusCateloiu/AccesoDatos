@@ -1,7 +1,12 @@
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.RandomAccessFile;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Product implements Comparable<Product> {
     private int id;
@@ -69,45 +74,91 @@ public class Product implements Comparable<Product> {
     }
 
     public void writeFile(String rutaFichero) {
+        List<String> prodCSV = new ArrayList<>();
         Path rutaAlFichero = Path.of(rutaFichero);
-        String producto;
-        producto = Integer.toString(this.id) + ",";
-        producto = producto + this.name + ",";
-        producto = producto + Integer.toString(this.supplier) + ",";
-        producto = producto + Integer.toString(this.category) + ",,";
-        producto = producto + Double.toString(this.unitPrice) + ",";
-        producto = producto + Integer.toString(this.unitsInStock) + ",,,";
+        Product prod = buscarProducto(rutaFichero);
+        long pos;
 
-        try {
-            if (Files.exists(rutaAlFichero)) {
-                Files.writeString(rutaAlFichero, "\n" + producto, StandardOpenOption.APPEND);
-            } else {
-                Files.writeString(rutaAlFichero, producto);
+        if (prod == null) {
+            prodCSV.add(Integer.toString(this.id));
+            prodCSV.add(this.name);
+            prodCSV.add(Integer.toString(this.supplier));
+            prodCSV.add(Integer.toString(this.category));
+            prodCSV.add(Double.toString(this.unitPrice));
+            prodCSV.add(Integer.toString(this.unitsInStock));
+
+            try (RandomAccessFile raf = new RandomAccessFile(rutaFichero, "rw")) {
+                raf.seek(raf.length());
+                raf.writeBytes("\n");
+                raf.write(String.join(",", prodCSV).getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } else {
+            prodCSV.add(Integer.toString(prod.id));
+            prodCSV.add(this.name);
+            prodCSV.add(Integer.toString(this.supplier));
+            prodCSV.add(Integer.toString(prod.category));
+            prodCSV.add("");
+            prodCSV.add(Double.toString(prod.unitPrice));
+            prodCSV.add(Integer.toString(prod.unitsInStock));
+            prodCSV.add("");
+            prodCSV.add("");
+            prodCSV.add("");
+
+            try (RandomAccessFile raf = new RandomAccessFile(rutaFichero, "rw")) {
+                pos = buscarPosicionProduct(rutaFichero);
+                raf.seek(pos);
+                raf.write(String.join(",", prodCSV).getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+
     }
 
-    public void writeFile(String rutaFichero, String nomProd, int supplierProd) {
-        Path rutaAlFichero = Path.of(rutaFichero);
-        String producto;
-        producto = Integer.toString(this.id) + ",";
-        producto = producto + this.name + ",";
-        producto = producto + Integer.toString(this.supplier) + ",";
-        producto = producto + Integer.toString(this.category) + ",,";
-        producto = producto + Double.toString(this.unitPrice) + ",";
-        producto = producto + Integer.toString(this.unitsInStock) + ",,,";
-
-        try {
-            if (Files.exists(rutaAlFichero)) {
-                Files.writeString(rutaAlFichero, "\n" + producto, StandardOpenOption.APPEND);
-            } else {
-                Files.writeString(rutaAlFichero, producto);
-            }
-        } catch (IOException e) {
+    private long buscarPosicionProduct(String rutaFichero) {
+        String[] contCadena;
+        String cadena;
+        long pos = 0;
+        try (RandomAccessFile raf = new RandomAccessFile(rutaFichero, "r")) {
+            do {
+                pos = raf.getFilePointer();
+                cadena =  raf.readLine();
+                if (cadena != null) {
+                    contCadena = cadena.split(",");
+                    if (this.name.equals(contCadena[1])) {
+                        return pos;
+                    }
+                }
+            } while(cadena != null);
+        } catch (Exception e) {
             e.printStackTrace();
         }
+
+        return pos;
+    }
+
+    private Product buscarProducto(String rutaFichero) {
+        String[] contCadena;
+        String cadena;
+        Path rutaAlFichero = Path.of(rutaFichero);
+
+        try (RandomAccessFile raf = new RandomAccessFile(rutaFichero, "r")) {
+            do {
+                cadena =  raf.readLine();
+                if (cadena != null) {
+                    contCadena = cadena.split(",");
+                    if (this.name.equals(contCadena[1])) {
+                        return new Product(Integer.parseInt(contCadena[0]), contCadena[1], Integer.parseInt(contCadena[2]), Integer.parseInt(contCadena[3]), Double.parseDouble(contCadena[5]), Integer.parseInt(contCadena[6]));
+                    }
+                }
+            } while(cadena != null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     @Override
