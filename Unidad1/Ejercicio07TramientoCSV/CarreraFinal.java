@@ -1,20 +1,20 @@
 package Ejercicio07TramientoCSV;
 
 public class CarreraFinal extends TipoCarrera {
-    private String extraPoint;
+    private boolean extraPoint;
     private String fastestLap;
 
-    public CarreraFinal(String track, int position, int no, String driver, String team, int startingGrid, int laps, String time, int points, String extraPoint, String fastestLap) {
+    public CarreraFinal(String track, int position, int no, String driver, String team, int startingGrid, int laps, String time, int points, boolean extraPoint, String fastestLap) {
         super(track, position, no, driver, team, startingGrid, laps, time, points);
         this.extraPoint = extraPoint;
         this.fastestLap = fastestLap;
     }
 
-    public String getExtraPoint() {
+    public boolean getExtraPoint() {
         return extraPoint;
     }
 
-    public void setExtraPoint(String extraPoint) {
+    public void setExtraPoint(boolean extraPoint) {
         this.extraPoint = extraPoint;
     }
 
