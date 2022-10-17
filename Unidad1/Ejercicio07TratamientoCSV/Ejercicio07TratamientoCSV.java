@@ -3,9 +3,7 @@ package Ejercicio07TratamientoCSV;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class Ejercicio07TratamientoCSV {
     public static void main(String[] args) {
@@ -13,13 +11,12 @@ public class Ejercicio07TratamientoCSV {
         List<List<String>> sprintRaceResult = lecturaCSV("Unidad1/Ejercicio07TratamientoCSV/formula1_2021season_sprintQualifyingResults.csv");
         List<CarreraFinal> carreraFinalResult = new ArrayList<>();
         List<SprintCarrera> carreraSprintResult = new ArrayList<>();
-        List<TipoCarrera> corredoresConMasPuntos = new ArrayList<>();
+        List<TipoCarrera> todasLasCarreras = new ArrayList<>();
+        HashMap<String, Float> corredoresPutos = new HashMap<>();
 
-        int position;
-        CarreraFinal carreraFinal;
-        TipoCarrera carrera;
-        int posCorredorMasP = 0;
-        float maxPoints = 0, sumPoints;
+        int position = 0;
+        float puntosCorredor, maxValor = 0;
+
 
         for (List<String> linea : raceResult) {
             if (linea.get(1).equals("NC")) {
@@ -29,7 +26,7 @@ public class Ejercicio07TratamientoCSV {
             } else {
                 position = Integer.parseInt(linea.get(1));
             }
-            carreraFinalResult.add(new CarreraFinal(linea.get(0), position, Integer.parseInt(linea.get(2)), linea.get(3), linea.get(4), Integer.parseInt(linea.get(5)), Integer.parseInt(linea.get(6)), linea.get(7), Float.parseFloat(linea.get(8)), linea.get(9).equals("No") ? false : true, linea.get(10)));
+            todasLasCarreras.add(new CarreraFinal(linea.get(0), position, Integer.parseInt(linea.get(2)), linea.get(3), linea.get(4), Integer.parseInt(linea.get(5)), Integer.parseInt(linea.get(6)), linea.get(7), Float.parseFloat(linea.get(8)), linea.get(9).equals("No") ? false : true, linea.get(10)));
         }
 
         for (List<String> linea : sprintRaceResult) {
@@ -40,31 +37,31 @@ public class Ejercicio07TratamientoCSV {
             } else {
                 position = Integer.parseInt(linea.get(1));
             }
-            carreraSprintResult.add(new SprintCarrera(linea.get(0), position, Integer.parseInt(linea.get(2)), linea.get(3), linea.get(4), Integer.parseInt(linea.get(5)), Integer.parseInt(linea.get(6)), linea.get(7), Float.parseFloat(linea.get(8))));
+            todasLasCarreras.add(new SprintCarrera(linea.get(0), position, Integer.parseInt(linea.get(2)), linea.get(3), linea.get(4), Integer.parseInt(linea.get(5)), Integer.parseInt(linea.get(6)), linea.get(7), Float.parseFloat(linea.get(8))));
         }
 
-        for (CarreraFinal carrFinal : carreraFinalResult) {
-            for (SprintCarrera sprint : carreraSprintResult) {
-                if (carrFinal.getDriver().equalsIgnoreCase(sprint.getDriver())) {
-                    carreraFinal = carrFinal;
-                    sumPoints = carrFinal.getPoints() + sprint.getPoints();
-                    corredoresConMasPuntos.add(carreraFinal);
+        for (int i = 0; i < todasLasCarreras.size(); i++) {
+            puntosCorredor = 0;
+            for (TipoCarrera car : todasLasCarreras) {
+                if (todasLasCarreras.get(i).getDriver().equalsIgnoreCase(car.getDriver())) {
+                    puntosCorredor += car.getPoints();
                 }
             }
+            corredoresPutos.put(todasLasCarreras.get(i).getDriver(), puntosCorredor);
         }
 
-        for (int i = 0; i < corredoresConMasPuntos.size(); i++) {
-            carrera = corredoresConMasPuntos.get(i);
-            if (carrera.getPoints() > maxPoints) {
-                posCorredorMasP = i;
-                maxPoints = carrera.getPoints();
+        List<Float> values = corredoresPutos.values().stream().toList();
+        List<String> keys = corredoresPutos.keySet().stream().toList();
+
+        for (int i = 0; i < keys.size(); i++) {
+            if (values.get(i) >= maxValor) {
+                maxValor = values.get(i);
+                position = i;
             }
         }
 
-        float finalMaxPoints = maxPoints;
-        carreraFinalResult.stream().filter(carr -> carr.getPoints() >= finalMaxPoints).map(carr -> carr.getDriver()).distinct().forEach(System.out::println);
-        System.out.println();
-        corredoresConMasPuntos.stream().filter(carr -> carr.getPoints() >= finalMaxPoints).map(carr -> carr.getDriver()).distinct().forEach(System.out::println);
+        System.out.println(keys.get(position) + " " + values.get(position));
+
     }
 
     private static List<List<String>> lecturaCSV(String ruta) {
