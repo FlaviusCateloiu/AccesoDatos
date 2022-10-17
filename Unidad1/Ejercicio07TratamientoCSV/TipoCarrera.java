@@ -1,8 +1,8 @@
-package Ejercicio07TramientoCSV;
+package Ejercicio07TratamientoCSV;
 
 public abstract class TipoCarrera {
-    private final int dq = 0;
-    private final int nc = -1;
+    public static final int DQ = 0;
+    public static final int NC = -1;
     private String track;
     private int position;
     private int no;
@@ -11,9 +11,9 @@ public abstract class TipoCarrera {
     private int startingGrid;
     private int laps;
     private String time;
-    private int points;
+    private float points;
 
-    public TipoCarrera(String track, int position, int no, String driver, String team, int startingGrid, int laps, String time, int points) {
+    public TipoCarrera(String track, int position, int no, String driver, String team, int startingGrid, int laps, String time, float points) {
         this.track = track;
         this.position = position;
         this.no = no;
@@ -23,14 +23,6 @@ public abstract class TipoCarrera {
         this.laps = laps;
         this.time = time;
         this.points = points;
-    }
-
-    public int getDq() {
-        return dq;
-    }
-
-    public int getNc() {
-        return nc;
     }
 
     public String getTrack() {
@@ -97,11 +89,11 @@ public abstract class TipoCarrera {
         this.time = time;
     }
 
-    public int getPoints() {
+    public float getPoints() {
         return points;
     }
 
-    public void setPoints(int points) {
+    public void setPoints(float points) {
         this.points = points;
     }
 }
