@@ -6,6 +6,8 @@ import java.nio.file.Paths;
 import java.util.*;
 
 public class Ejercicio07TratamientoCSV {
+
+    /* https://stackoverflow.com/questions/34997501/java-8-stream-groupingby-summing-an-attributevalue */
     public static void main(String[] args) {
         List<List<String>> raceResult = lecturaCSV("Unidad1/Ejercicio07TratamientoCSV/formula1_2021season_raceResults.csv");
         List<List<String>> sprintRaceResult = lecturaCSV("Unidad1/Ejercicio07TratamientoCSV/formula1_2021season_sprintQualifyingResults.csv");
