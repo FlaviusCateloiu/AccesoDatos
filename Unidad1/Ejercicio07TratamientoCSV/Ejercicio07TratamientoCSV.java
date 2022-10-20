@@ -18,7 +18,6 @@ public class Ejercicio07TratamientoCSV {
         HashMap<String, Float> corredoresPutos = new HashMap<>();
 
         int position = 0;
-        float puntosCorredor, maxValor = 0;
 
 
         for (List<String> linea : raceResult) {
@@ -29,7 +28,7 @@ public class Ejercicio07TratamientoCSV {
             } else {
                 position = Integer.parseInt(linea.get(1));
             }
-            todasLasCarreras.add(new CarreraFinal(linea.get(0), position, Integer.parseInt(linea.get(2)), linea.get(3), linea.get(4), Integer.parseInt(linea.get(5)), Integer.parseInt(linea.get(6)), linea.get(7), Float.parseFloat(linea.get(8)), linea.get(9).equals("No") ? false : true, linea.get(10)));
+            carreraFinalResult.add(new CarreraFinal(linea.get(0), position, Integer.parseInt(linea.get(2)), linea.get(3), linea.get(4), Integer.parseInt(linea.get(5)), Integer.parseInt(linea.get(6)), linea.get(7), Float.parseFloat(linea.get(8)), linea.get(9).equals("No") ? false : true, linea.get(10)));
         }
 
         for (List<String> linea : sprintRaceResult) {
@@ -40,7 +39,7 @@ public class Ejercicio07TratamientoCSV {
             } else {
                 position = Integer.parseInt(linea.get(1));
             }
-            todasLasCarreras.add(new SprintCarrera(linea.get(0), position, Integer.parseInt(linea.get(2)), linea.get(3), linea.get(4), Integer.parseInt(linea.get(5)), Integer.parseInt(linea.get(6)), linea.get(7), Float.parseFloat(linea.get(8))));
+            carreraSprintResult.add(new SprintCarrera(linea.get(0), position, Integer.parseInt(linea.get(2)), linea.get(3), linea.get(4), Integer.parseInt(linea.get(5)), Integer.parseInt(linea.get(6)), linea.get(7), Float.parseFloat(linea.get(8))));
         }
 
         todasLasCarreras.addAll(carreraFinalResult);
@@ -74,7 +73,7 @@ public class Ejercicio07TratamientoCSV {
         listaEscuderias.stream().sorted((c1, c2) -> Double.compare(c2.getTotalPuntos(), c1.getTotalPuntos())).limit(1).forEach(System.out::println);
         System.out.println();
 
-        Map<List<String>, Double> mapCondVic = todasLasCarreras.stream()
+        Map<List<String>, Double> mapCondVic = carreraFinalResult.stream()
                 .filter(p -> p.getPosition() == 1)
                 .collect(Collectors.groupingBy(
                         p -> Arrays.asList(p.getDriver()),
@@ -89,7 +88,7 @@ public class Ejercicio07TratamientoCSV {
         listaCondVic.stream().sorted((c1, c2) -> Double.compare(c2.getTotalPuntos(), c1.getTotalPuntos())).limit(1).forEach(System.out::println);
         System.out.println();
 
-        Map<List<String>, Double> mapEscudVic = todasLasCarreras.stream()
+        Map<List<String>, Double> mapEscudVic = carreraFinalResult.stream()
                 .filter(p -> p.getPosition() == 1)
                 .collect(Collectors.groupingBy(
                         p -> Arrays.asList(p.getTeam()),
@@ -104,20 +103,67 @@ public class Ejercicio07TratamientoCSV {
         listaEscudVic.stream().sorted((c1, c2) -> Double.compare(c2.getTotalPuntos(), c1.getTotalPuntos())).limit(1).forEach(System.out::println);
         System.out.println();
 
-        Map<List<String>, Double> mapCondMasPod = todasLasCarreras.stream()
-                .filter(p -> p.getPosition() == 1 || p.getPosition() == 2 || p.getPosition() == 3)
+        Map<String, Long> mapCondMasPod = carreraFinalResult.stream()
+                .filter(p -> p.getPosition() < 4 && p.getPosition() > 0)
                 .collect(Collectors.groupingBy(
-                        p -> Arrays.asList(p.getDriver()),
-                        Collectors.summingDouble(TipoCarrera::getPosition)
+                        TipoCarrera::getDriver,
+                        Collectors.counting()
                 ));
 
         List<Conductor> listaCondMasPod = mapCondMasPod.entrySet()
                 .stream()
-                .map(c -> new Conductor(c.getKey().get(0), c.getValue())).toList();
+                .map(c -> new Conductor(c.getKey(), c.getValue())).toList();
 
         System.out.println("Corredor con mas veces podio: ");
         listaCondMasPod.stream().sorted((c1, c2) -> Double.compare(c2.getTotalPuntos(), c1.getTotalPuntos())).limit(1).forEach(System.out::println);
         System.out.println();
+
+        Map<String, Long> mapEscudMasPod = carreraFinalResult.stream()
+                .filter(p -> p.getPosition() < 4 && p.getPosition() > 0)
+                .collect(Collectors.groupingBy(
+                        TipoCarrera::getTeam,
+                        Collectors.counting()
+                ));
+
+        List<Conductor> listaEscudMasPod = mapEscudMasPod.entrySet()
+                .stream()
+                .map(c -> new Conductor(c.getKey(), c.getValue())).toList();
+
+        System.out.println("Escuderia con mas veces podio: ");
+        listaEscudMasPod.stream().sorted((c1, c2) -> Double.compare(c2.getTotalPuntos(), c1.getTotalPuntos())).limit(1).forEach(System.out::println);
+        System.out.println();
+
+        Map<String, Long> mapCorrMasPole = carreraFinalResult.stream()
+                .filter(p -> p.getStartingGrid() == 1)
+                .collect(Collectors.groupingBy(
+                        TipoCarrera::getDriver,
+                        Collectors.counting()
+                ));
+
+        System.out.println("Corredor con mas poles: ");
+        mapCorrMasPole.entrySet()
+                .stream()
+                .map(c -> new Conductor(c.getKey(), c.getValue()))
+                .sorted((c1, c2) -> Double.compare(c2.getTotalPuntos(), c1.getTotalPuntos())).limit(1)
+                .forEach(System.out::println);
+        System.out.println();
+
+        Map<String, Long> mapEscudMasPole = carreraFinalResult.stream()
+                .filter(p -> p.getStartingGrid() == 1)
+                .collect(Collectors.groupingBy(
+                        TipoCarrera::getTeam,
+                        Collectors.counting()
+                ));
+
+        System.out.println("Escuderia con mas poles: ");
+        mapEscudMasPole.entrySet()
+                .stream()
+                .map(c -> new Conductor(c.getKey(), c.getValue()))
+                .sorted((c1, c2) -> Double.compare(c2.getTotalPuntos(), c1.getTotalPuntos())).limit(1)
+                .forEach(System.out::println);
+        System.out.println();
+
+
     }
 
     private static List<List<String>> lecturaCSV(String ruta) {
