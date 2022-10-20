@@ -163,7 +163,20 @@ public class Ejercicio07TratamientoCSV {
                 .forEach(System.out::println);
         System.out.println();
 
+        Map<String, Long> mapCondMasVulRap = carreraFinalResult.stream()
+                .filter(p -> p.getStartingGrid() == 1)
+                .collect(Collectors.groupingBy(
+                        TipoCarrera::getDriver,
+                        Collectors.counting()
+                ));
 
+        System.out.println("Corredor con mas vueltas rapidas: ");
+        mapCondMasVulRap.entrySet()
+                .stream()
+                .map(c -> new Conductor(c.getKey(), c.getValue()))
+                .sorted((c1, c2) -> Double.compare(c2.getTotalPuntos(), c1.getTotalPuntos())).limit(1)
+                .forEach(System.out::println);
+        System.out.println();
     }
 
     private static List<List<String>> lecturaCSV(String ruta) {
@@ -176,4 +189,23 @@ public class Ejercicio07TratamientoCSV {
 
         return race;
     }
+    private class vultasRapidasCorredor {
+        private String nomCorr;
+        private double numVultRap;
+
+        private vultasRapidasCorredor(String nomCorr, double numVultRap) {
+            this.nomCorr = nomCorr;
+            this.numVultRap = numVultRap;
+        }
+
+        @Override
+        public String toString() {
+            return "vultasRapidasCorredor{" +
+                    "nomCorr='" + nomCorr + '\''  +
+                    ", numVultRap=" + numVultRap +
+                    '}';
+        }
+    }
 }
+
+
