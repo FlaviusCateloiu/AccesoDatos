@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Ejercicio07TratamientoCSV {
 
@@ -42,28 +43,81 @@ public class Ejercicio07TratamientoCSV {
             todasLasCarreras.add(new SprintCarrera(linea.get(0), position, Integer.parseInt(linea.get(2)), linea.get(3), linea.get(4), Integer.parseInt(linea.get(5)), Integer.parseInt(linea.get(6)), linea.get(7), Float.parseFloat(linea.get(8))));
         }
 
-        for (int i = 0; i < todasLasCarreras.size(); i++) {
-            puntosCorredor = 0;
-            for (TipoCarrera car : todasLasCarreras) {
-                if (todasLasCarreras.get(i).getDriver().equalsIgnoreCase(car.getDriver())) {
-                    puntosCorredor += car.getPoints();
-                }
-            }
-            corredoresPutos.put(todasLasCarreras.get(i).getDriver(), puntosCorredor);
-        }
+        todasLasCarreras.addAll(carreraFinalResult);
+        todasLasCarreras.addAll(carreraSprintResult);
 
-        List<Float> values = corredoresPutos.values().stream().toList();
-        List<String> keys = corredoresPutos.keySet().stream().toList();
+        Map<List<String>, Double> mapConductor = todasLasCarreras.stream()
+                .collect(Collectors.groupingBy(
+                        p -> Arrays.asList(p.getDriver()),
+                        Collectors.summingDouble(TipoCarrera::getPoints)
+                ));
 
-        for (int i = 0; i < keys.size(); i++) {
-            if (values.get(i) >= maxValor) {
-                maxValor = values.get(i);
-                position = i;
-            }
-        }
+        List<Conductor> listaConductores = mapConductor.entrySet()
+                .stream()
+                .map(c -> new Conductor(c.getKey().get(0), c.getValue())).toList();
 
-        System.out.println(keys.get(position) + " " + values.get(position));
+        System.out.print("Campeon F1: ");
+        listaConductores.stream().sorted((c1, c2) -> Double.compare(c2.getTotalPuntos(), c1.getTotalPuntos())).limit(1).forEach(System.out::println);
+        System.out.println();
 
+        Map<List<String>, Double> mapEscuderia = todasLasCarreras.stream()
+                .collect(Collectors.groupingBy(
+                        p -> Arrays.asList(p.getTeam()),
+                        Collectors.summingDouble(TipoCarrera::getPoints)
+                ));
+
+        List<Conductor> listaEscuderias = mapEscuderia.entrySet()
+                .stream()
+                .map(c -> new Conductor(c.getKey().get(0), c.getValue())).toList();
+
+        System.out.print("Escuderia Campeona del año pasado: ");
+        listaEscuderias.stream().sorted((c1, c2) -> Double.compare(c2.getTotalPuntos(), c1.getTotalPuntos())).limit(1).forEach(System.out::println);
+        System.out.println();
+
+        Map<List<String>, Double> mapCondVic = todasLasCarreras.stream()
+                .filter(p -> p.getPosition() == 1)
+                .collect(Collectors.groupingBy(
+                        p -> Arrays.asList(p.getDriver()),
+                        Collectors.summingDouble(TipoCarrera::getPosition)
+                ));
+
+        List<Conductor> listaCondVic = mapCondVic.entrySet()
+                .stream()
+                .map(c -> new Conductor(c.getKey().get(0), c.getValue())).toList();
+
+        System.out.println("Corredor con mas victorias: ");
+        listaCondVic.stream().sorted((c1, c2) -> Double.compare(c2.getTotalPuntos(), c1.getTotalPuntos())).limit(1).forEach(System.out::println);
+        System.out.println();
+
+        Map<List<String>, Double> mapEscudVic = todasLasCarreras.stream()
+                .filter(p -> p.getPosition() == 1)
+                .collect(Collectors.groupingBy(
+                        p -> Arrays.asList(p.getTeam()),
+                        Collectors.summingDouble(TipoCarrera::getPosition)
+                ));
+
+        List<Conductor> listaEscudVic = mapEscudVic.entrySet()
+                .stream()
+                .map(c -> new Conductor(c.getKey().get(0), c.getValue())).toList();
+
+        System.out.println("Escuderia con mas victorias: ");
+        listaEscudVic.stream().sorted((c1, c2) -> Double.compare(c2.getTotalPuntos(), c1.getTotalPuntos())).limit(1).forEach(System.out::println);
+        System.out.println();
+
+        Map<List<String>, Double> mapCondMasPod = todasLasCarreras.stream()
+                .filter(p -> p.getPosition() == 1 || p.getPosition() == 2 || p.getPosition() == 3)
+                .collect(Collectors.groupingBy(
+                        p -> Arrays.asList(p.getDriver()),
+                        Collectors.summingDouble(TipoCarrera::getPosition)
+                ));
+
+        List<Conductor> listaCondMasPod = mapCondMasPod.entrySet()
+                .stream()
+                .map(c -> new Conductor(c.getKey().get(0), c.getValue())).toList();
+
+        System.out.println("Corredor con mas veces podio: ");
+        listaCondMasPod.stream().sorted((c1, c2) -> Double.compare(c2.getTotalPuntos(), c1.getTotalPuntos())).limit(1).forEach(System.out::println);
+        System.out.println();
     }
 
     private static List<List<String>> lecturaCSV(String ruta) {

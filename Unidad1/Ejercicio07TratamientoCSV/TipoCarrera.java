@@ -11,9 +11,9 @@ public abstract class TipoCarrera {
     private int startingGrid;
     private int laps;
     private String time;
-    private float points;
+    private double points;
 
-    public TipoCarrera(String track, int position, int no, String driver, String team, int startingGrid, int laps, String time, float points) {
+    public TipoCarrera(String track, int position, int no, String driver, String team, int startingGrid, int laps, String time, double points) {
         this.track = track;
         this.position = position;
         this.no = no;
@@ -89,11 +89,16 @@ public abstract class TipoCarrera {
         this.time = time;
     }
 
-    public float getPoints() {
+    public double getPoints() {
         return points;
     }
 
-    public void setPoints(float points) {
+    public void setPoints(double points) {
         this.points = points;
+    }
+
+    @Override
+    public String toString() {
+        return track + ", " + position + ", " + driver + ", " + team + ", " + points;
     }
 }
