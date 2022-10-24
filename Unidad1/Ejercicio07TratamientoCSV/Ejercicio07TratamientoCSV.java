@@ -7,6 +7,8 @@ import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/* No he podido terminar los tres ultimos puntos los terminare los siguientes dias. */
+
 public class Ejercicio07TratamientoCSV {
 
     /* https://stackoverflow.com/questions/34997501/java-8-stream-groupingby-summing-an-attributevalue */
