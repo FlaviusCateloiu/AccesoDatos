@@ -28,7 +28,7 @@ public class Ejercicio07TratamientoCSV {
             } else {
                 position = Integer.parseInt(linea.get(1));
             }
-            carreraFinalResult.add(new CarreraFinal(linea.get(0), position, Integer.parseInt(linea.get(2)), linea.get(3), linea.get(4), Integer.parseInt(linea.get(5)), Integer.parseInt(linea.get(6)), linea.get(7), Float.parseFloat(linea.get(8)), linea.get(9).equals("No") ? false : true, linea.get(10)));
+            carreraFinalResult.add(new CarreraFinal(linea.get(0), position, Integer.parseInt(linea.get(2)), linea.get(3), linea.get(4), Integer.parseInt(linea.get(5)), Integer.parseInt(linea.get(6)), linea.get(7), Float.parseFloat(linea.get(8)), !linea.get(9).equals("No"), linea.get(10)));
         }
 
         for (List<String> linea : sprintRaceResult) {
@@ -163,8 +163,18 @@ public class Ejercicio07TratamientoCSV {
                 .forEach(System.out::println);
         System.out.println();
 
-        System.out.println("Corredor con mas vueltas rapidas: ");
+        Map<String, Long> mapCorrMasVueltaRap = carreraFinalResult.stream()
+                .filter(p -> !p.getFastestLap().equals("N/A"))
+                .sorted((p1, p2) -> Float.compare(Float.parseFloat(p2.getFastestLap().split(":")[1]), Float.parseFloat(p1.getFastestLap().split(":")[1])))
+                .collect(Collectors.groupingBy(
+                        TipoCarrera::getDriver,
+                        Collectors.counting()
+                ));
 
+        System.out.println("Corredor con mas vueltas rapidas: ");
+        mapCorrMasVueltaRap.entrySet()
+                .stream().limit(1)
+                .forEach(System.out::println);
         System.out.println();
     }
 

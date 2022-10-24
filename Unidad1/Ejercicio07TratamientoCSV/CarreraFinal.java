@@ -1,5 +1,7 @@
 package Ejercicio07TratamientoCSV;
 
+import java.time.LocalTime;
+
 public class CarreraFinal extends TipoCarrera {
     private boolean extraPoint;
     private String fastestLap;
