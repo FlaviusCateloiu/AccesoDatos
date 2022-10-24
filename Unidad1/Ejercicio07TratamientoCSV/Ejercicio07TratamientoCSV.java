@@ -3,6 +3,7 @@ package Ejercicio07TratamientoCSV;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -15,7 +16,6 @@ public class Ejercicio07TratamientoCSV {
         List<CarreraFinal> carreraFinalResult = new ArrayList<>();
         List<SprintCarrera> carreraSprintResult = new ArrayList<>();
         List<TipoCarrera> todasLasCarreras = new ArrayList<>();
-        HashMap<String, Float> corredoresPutos = new HashMap<>();
 
         int position = 0;
 
@@ -163,19 +163,8 @@ public class Ejercicio07TratamientoCSV {
                 .forEach(System.out::println);
         System.out.println();
 
-        Map<String, Long> mapCondMasVulRap = carreraFinalResult.stream()
-                .filter(p -> p.getStartingGrid() == 1)
-                .collect(Collectors.groupingBy(
-                        TipoCarrera::getDriver,
-                        Collectors.counting()
-                ));
-
         System.out.println("Corredor con mas vueltas rapidas: ");
-        mapCondMasVulRap.entrySet()
-                .stream()
-                .map(c -> new Conductor(c.getKey(), c.getValue()))
-                .sorted((c1, c2) -> Double.compare(c2.getTotalPuntos(), c1.getTotalPuntos())).limit(1)
-                .forEach(System.out::println);
+
         System.out.println();
     }
 
