@@ -7,8 +7,15 @@ import jakarta.xml.bind.Unmarshaller;
 
 public class Ejercicio08TratamientoXML {
     public static void main(String[] args) {
-        Path nombreFichero = Path.of("Unidad1/Ejercicio08TratamientoXML/formula1_2021season_calendar.xml");
+        Path nombreFichero = Path.of("Unidad1/Ejercicio08TratamientoXML","formula1_2021season_calendar.xml");
         JAXBContext context = null;
 
+        try {
+            context = JAXBContext.newInstance();
+            Unmarshaller jaxbUnmarshaller = context.createUnmarshaller();
+
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
     }
 }
