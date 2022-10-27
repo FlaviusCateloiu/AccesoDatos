@@ -15,7 +15,6 @@ public class Mundial {
     public Mundial() {
     }
 
-    @XmlElementWrapper(name = "race")
     public ArrayList<Circuito> getListaCircuitos() {
         return listaCircuitos;
     }
