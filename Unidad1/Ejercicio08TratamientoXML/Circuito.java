@@ -42,6 +42,10 @@ public class Circuito {
         this.drszones = drszones;
     }
 
+    public Circuito() {
+
+    }
+
     public Circuito(int round, String gpname) {
         this.round = round;
         this.gpname = gpname;

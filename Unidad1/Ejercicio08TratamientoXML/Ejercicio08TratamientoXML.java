@@ -10,7 +10,6 @@ import jakarta.xml.bind.Unmarshaller;
 
 public class Ejercicio08TratamientoXML {
     public static void main(String[] args) {
-        List<Circuito> listaCircuitos = new ArrayList<>();
         Path nombreFichero = Path.of("Unidad1/Ejercicio08TratamientoXML","formula1_2021season_calendar.xml");
         JAXBContext context = null;
 
@@ -18,6 +17,13 @@ public class Ejercicio08TratamientoXML {
         try {
             context = JAXBContext.newInstance(Circuito.class);
             Unmarshaller jaxbUnmarshaller = context.createUnmarshaller();
+            Mundial mundial = (Mundial) jaxbUnmarshaller.unmarshal(nombreFichero.toFile());
+
+            ArrayList<Circuito> listaCircuitos = mundial.getListaCircuitos();
+
+            for (Circuito c : listaCircuitos) {
+                System.out.println(c.getGpname());
+            }
 
         } catch (JAXBException e) {
             e.printStackTrace();
