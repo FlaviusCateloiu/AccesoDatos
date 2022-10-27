@@ -11,7 +11,7 @@ public class Circuito {
     private int round;
     private String country;
     private String city;
-    private String circuitName;
+    private String circuitname;
     private String gpname;
     private LocalDate racedate;
     private int firstgp;
@@ -28,7 +28,7 @@ public class Circuito {
         this.round = round;
         this.country = country;
         this.city = city;
-        this.circuitName = circuitName;
+        this.circuitname = circuitName;
         this.gpname = gpname;
         this.racedate = racedate;
         this.firstgp = firstgp;
@@ -80,11 +80,11 @@ public class Circuito {
 
     @XmlElement(name = "circuitname")
     public String getCircuitName() {
-        return circuitName;
+        return circuitname;
     }
 
     public void setCircuitName(String circuitName) {
-        this.circuitName = circuitName;
+        this.circuitname = circuitName;
     }
 
     @XmlElement(name = "gpname")
