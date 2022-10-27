@@ -1,6 +1,7 @@
 package Ejercicio08TratamientoXML;
 
 import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlElementWrapper;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlType;
 
@@ -14,7 +15,7 @@ public class Mundial {
     public Mundial() {
     }
 
-    @XmlElement(name = "race")
+    @XmlElementWrapper(name = "race")
     public ArrayList<Circuito> getListaCircuitos() {
         return listaCircuitos;
     }
