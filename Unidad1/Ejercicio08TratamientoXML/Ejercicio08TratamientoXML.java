@@ -2,7 +2,6 @@ package Ejercicio08TratamientoXML;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.List;
 
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
@@ -13,16 +12,15 @@ public class Ejercicio08TratamientoXML {
         Path nombreFichero = Path.of("Unidad1/Ejercicio08TratamientoXML","formula1_2021season_calendar.xml");
         JAXBContext context = null;
 
-
         try {
-            context = JAXBContext.newInstance(Circuito.class);
+            context = JAXBContext.newInstance(Mundial.class);
             Unmarshaller jaxbUnmarshaller = context.createUnmarshaller();
             Mundial mundial = (Mundial) jaxbUnmarshaller.unmarshal(nombreFichero.toFile());
 
-            ArrayList<Circuito> listaCircuitos = mundial.getListaCircuitos();
+            ArrayList<Circuito> listaCircuitos = mundial.getCircuitos();
 
             for (Circuito c : listaCircuitos) {
-                System.out.println(c.getGpname());
+                System.out.println(c);
             }
 
         } catch (JAXBException e) {

@@ -1,57 +1,52 @@
 package Ejercicio08TratamientoXML;
 
 import jakarta.xml.bind.annotation.*;
+import jakarta.xml.bind.annotation.adapters.XmlAdapter;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement (name = "race")
-@XmlType(propOrder = {"round", "country", "city", "circuitname", "gpname", "racedate", "firstgp", "numberoflaps",
-        "circuitlength", "racedistance", "laprecord", "recordowner", "recordyear", "turns", "drszones"})
 public class Circuito {
+    @XmlAttribute(name = "round")
     private int round;
+    @XmlElement(name = "country")
     private String country;
+    @XmlElement(name = "city")
     private String city;
+    @XmlElement(name = "circuitname")
     private String circuitname;
+    @XmlElement(name = "gpname")
     private String gpname;
-    private LocalDate racedate;
+    @XmlElement(name = "racedate")
+    private Date racedate;
+    @XmlElement(name = "firstgp")
     private int firstgp;
+    @XmlElement(name = "numberoflaps")
     private int numberoflaps;
+    @XmlElement(name = "circuitlength")
     private float circuitlength;
+    @XmlElement(name = "racedistance")
     private float racedistance;
+    @XmlElement(name = "laprecord")
     private String laprecord;
+    @XmlElement(name = "recordowner")
     private String recordowner;
+    @XmlElement(name = "recordyear")
     private int recordyear;
+    @XmlElement(name = "turns")
     private int turns;
+    @XmlElement(name = "drszones")
     private int drszones;
 
-    public Circuito(int round, String country, String city, String circuitName, String gpname, LocalDate racedate, int firstgp, int numberoflaps, float circuitlength, float racedistance, String laprecord, String recordowner, int recordyear, int turns, int drszones) {
-        this.round = round;
-        this.country = country;
-        this.city = city;
-        this.circuitname = circuitName;
-        this.gpname = gpname;
-        this.racedate = racedate;
-        this.firstgp = firstgp;
-        this.numberoflaps = numberoflaps;
-        this.circuitlength = circuitlength;
-        this.racedistance = racedistance;
-        this.laprecord = laprecord;
-        this.recordowner = recordowner;
-        this.recordyear = recordyear;
-        this.turns = turns;
-        this.drszones = drszones;
-    }
-
     public Circuito() {
-
     }
 
-    public Circuito(int round, String gpname) {
-        this.round = round;
-        this.gpname = gpname;
-    }
-
-    @XmlAttribute(name = "round")
     public int getRound() {
         return round;
     }
@@ -60,7 +55,6 @@ public class Circuito {
         this.round = round;
     }
 
-    @XmlElement(name = "country")
     public String getCountry() {
         return country;
     }
@@ -69,7 +63,6 @@ public class Circuito {
         this.country = country;
     }
 
-    @XmlElement(name = "city")
     public String getCity() {
         return city;
     }
@@ -78,16 +71,14 @@ public class Circuito {
         this.city = city;
     }
 
-    @XmlElement(name = "circuitname")
-    public String getCircuitName() {
+    public String getCircuitname() {
         return circuitname;
     }
 
-    public void setCircuitName(String circuitName) {
+    public void setCircuitname(String circuitName) {
         this.circuitname = circuitName;
     }
 
-    @XmlElement(name = "gpname")
     public String getGpname() {
         return gpname;
     }
@@ -96,16 +87,18 @@ public class Circuito {
         this.gpname = gpname;
     }
 
-    @XmlElement(name = "racedate")
-    public LocalDate getRacedate() {
+    public Date getRacedate() {
         return racedate;
     }
 
-    public void setRacedate(LocalDate racedate) {
-        this.racedate = racedate;
+    public void setRacedate(String racedate) {
+        try {
+            this.racedate =
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    @XmlElement(name = "firstgp")
     public int getFirstgp() {
         return firstgp;
     }
@@ -114,7 +107,6 @@ public class Circuito {
         this.firstgp = firstgp;
     }
 
-    @XmlElement(name = "numberoflaps")
     public int getNumberoflaps() {
         return numberoflaps;
     }
@@ -123,7 +115,6 @@ public class Circuito {
         this.numberoflaps = numberoflaps;
     }
 
-    @XmlElement(name = "circuitlength")
     public float getCircuitlength() {
         return circuitlength;
     }
@@ -132,7 +123,6 @@ public class Circuito {
         this.circuitlength = circuitlength;
     }
 
-    @XmlElement(name = "racedistance")
     public float getRacedistance() {
         return racedistance;
     }
@@ -141,7 +131,6 @@ public class Circuito {
         this.racedistance = racedistance;
     }
 
-    @XmlElement(name = "laprecord")
     public String getLaprecord() {
         return laprecord;
     }
@@ -150,7 +139,6 @@ public class Circuito {
         this.laprecord = laprecord;
     }
 
-    @XmlElement(name = "recordowner")
     public String getRecordowner() {
         return recordowner;
     }
@@ -159,7 +147,6 @@ public class Circuito {
         this.recordowner = recordowner;
     }
 
-    @XmlElement(name = "recordyear")
     public int getRecordyear() {
         return recordyear;
     }
@@ -168,7 +155,6 @@ public class Circuito {
         this.recordyear = recordyear;
     }
 
-    @XmlElement(name = "turns")
     public int getTurns() {
         return turns;
     }
@@ -177,12 +163,38 @@ public class Circuito {
         this.turns = turns;
     }
 
-    @XmlElement(name = "drszones")
     public int getDrszones() {
         return drszones;
     }
 
     public void setDrszones(int drszones) {
         this.drszones = drszones;
+    }
+
+    @Override
+    public String toString() {
+        return round + ", " + country + ", " + city + ", " + circuitname + ", " + gpname + ", " + racedate + ", "
+                + firstgp + ", " + numberoflaps + ", " + circuitlength + ", " + racedistance + ", " + laprecord + ", "
+                + recordowner + ", " + recordyear + ", " + turns + ", " + drszones;
+    }
+
+    public class DateAdapter extends XmlAdapter<String, Date> {
+
+        private static final ThreadLocal<DateFormat> dateFormat = new ThreadLocal<DateFormat>() {
+            @Override
+            protected DateFormat initialValue() {
+                return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            }
+        };
+
+        @Override
+        public Date unmarshal(String v) throws Exception {
+            return dateFormat.get().parse(v);
+        }
+
+        @Override
+        public String marshal(Date v) throws Exception {
+            return dateFormat.get().format(v);
+        }
     }
 }

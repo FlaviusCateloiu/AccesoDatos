@@ -1,25 +1,23 @@
 package Ejercicio08TratamientoXML;
 
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlElementWrapper;
-import jakarta.xml.bind.annotation.XmlRootElement;
-import jakarta.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.*;
 
 import java.util.ArrayList;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "calendar")
-@XmlType(propOrder = {"race"})
 public class Mundial {
-    private ArrayList<Circuito> listaCircuitos = new ArrayList<>();
+    @XmlElement(name = "race")
+    private ArrayList<Circuito> circuitos = new ArrayList<>();
 
     public Mundial() {
     }
 
-    public ArrayList<Circuito> getListaCircuitos() {
-        return listaCircuitos;
+    public ArrayList<Circuito> getCircuitos() {
+        return circuitos;
     }
 
-    public void setListaCircuitos(ArrayList<Circuito> listaCircuitos) {
-        this.listaCircuitos = listaCircuitos;
+    public void setCircuitos(ArrayList<Circuito> circuitos) {
+        this.circuitos = circuitos;
     }
 }
