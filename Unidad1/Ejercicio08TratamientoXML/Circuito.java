@@ -2,6 +2,7 @@ package Ejercicio08TratamientoXML;
 
 import jakarta.xml.bind.annotation.*;
 import jakarta.xml.bind.annotation.adapters.XmlAdapter;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -24,7 +25,7 @@ public class Circuito {
     @XmlElement(name = "gpname")
     private String gpname;
     @XmlElement(name = "racedate")
-    private Date racedate;
+    private String racedate;
     @XmlElement(name = "firstgp")
     private int firstgp;
     @XmlElement(name = "numberoflaps")
@@ -87,16 +88,12 @@ public class Circuito {
         this.gpname = gpname;
     }
 
-    public Date getRacedate() {
+    public String getRacedate() {
         return racedate;
     }
 
     public void setRacedate(String racedate) {
-        try {
-            this.racedate =
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        this. racedate = racedate;
     }
 
     public int getFirstgp() {
@@ -178,23 +175,4 @@ public class Circuito {
                 + recordowner + ", " + recordyear + ", " + turns + ", " + drszones;
     }
 
-    public class DateAdapter extends XmlAdapter<String, Date> {
-
-        private static final ThreadLocal<DateFormat> dateFormat = new ThreadLocal<DateFormat>() {
-            @Override
-            protected DateFormat initialValue() {
-                return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            }
-        };
-
-        @Override
-        public Date unmarshal(String v) throws Exception {
-            return dateFormat.get().parse(v);
-        }
-
-        @Override
-        public String marshal(Date v) throws Exception {
-            return dateFormat.get().format(v);
-        }
-    }
 }
