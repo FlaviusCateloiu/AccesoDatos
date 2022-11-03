@@ -76,13 +76,32 @@ public class Ejercicio08TratamientoXML {
                             Collectors.summingDouble(TipoCarrera::getPoints)
                     ));
 
-            List<Ejercicio07TratamientoCSV.Conductor> listaConductores = mapConductor.entrySet()
+            List<Conductor> listaConductores = mapConductor.entrySet()
                     .stream()
                     .map(c -> new Conductor(c.getKey().get(0), c.getValue())).toList();
 
-            System.out.print("Campeon F1: ");
-            listaConductores.stream().sorted((c1, c2) -> Double.compare(c2.getTotalPuntos(), c1.getTotalPuntos())).limit(1).forEach(System.out::println);
+            System.out.println("-Campeon F1: ");
+            List<Conductor> campeon = listaConductores.stream().sorted((c1, c2) -> Double.compare(c2.getTotalPuntos(), c1.getTotalPuntos())).limit(1).toList();
+            System.out.println(campeon.get(0));
             System.out.println();
+
+            List<CarreraFinal> listadoCadaCircuito = new ArrayList<>();
+
+            boolean ok = true;
+            for (Circuito c : listaCircuitos) {
+                for (int i = 0; i < carreraFinalResult.size() && ok; i++) {
+                    if (carreraFinalResult.get(i).getTrack().getGpname().equalsIgnoreCase(c.getGpname())) {
+                        ok = false;
+                        listadoCadaCircuito.add(carreraFinalResult.get(i));
+                    }
+                }
+                ok = true;
+            }
+
+            listadoCadaCircuito.stream().filter(c -> c.getDriver().equalsIgnoreCase(campeon.get(0).getNombre())).map(c -> c.getTrack().getGpname()).forEach(System.out::println);
+
+            System.out.println("-Grandes Premios Celebrados por pais: ");
+
 
         } catch (JAXBException e) {
             e.printStackTrace();
