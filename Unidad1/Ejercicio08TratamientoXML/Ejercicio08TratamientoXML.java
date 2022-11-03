@@ -4,10 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import Ejercicio07TratamientoCSV.Conductor;
@@ -80,9 +77,9 @@ public class Ejercicio08TratamientoXML {
                     .stream()
                     .map(c -> new Conductor(c.getKey().get(0), c.getValue())).toList();
 
-            System.out.println("-Campeon F1: ");
+            System.out.print("-Campeon F1: ");
             List<Conductor> campeon = listaConductores.stream().sorted((c1, c2) -> Double.compare(c2.getTotalPuntos(), c1.getTotalPuntos())).limit(1).toList();
-            System.out.println(campeon.get(0));
+            System.out.println(campeon.get(0).getNombre());
             System.out.println();
 
             List<CarreraFinal> listadoCadaCircuito = new ArrayList<>();
@@ -100,8 +97,19 @@ public class Ejercicio08TratamientoXML {
 
             listadoCadaCircuito.stream().filter(c -> c.getDriver().equalsIgnoreCase(campeon.get(0).getNombre())).map(c -> c.getTrack().getGpname()).forEach(System.out::println);
 
+            System.out.println();
             System.out.println("-Grandes Premios Celebrados por pais: ");
+            HashMap<String, Integer> grandesPremiosPaises = new HashMap<>();
 
+            for (Circuito c : listaCircuitos) {
+                if (!grandesPremiosPaises.containsKey(c.getCountry())) {
+                    grandesPremiosPaises.put(c.getCountry(), 1);
+                } else {
+                    grandesPremiosPaises.put(c.getCountry(), grandesPremiosPaises.get(c.getCountry()) + 1);
+                }
+            }
+
+            grandesPremiosPaises.entrySet().stream().sorted((c1, c2) -> Integer.compare(c2.getValue(), c1.getValue())).forEach(System.out::println);
 
         } catch (JAXBException e) {
             e.printStackTrace();
