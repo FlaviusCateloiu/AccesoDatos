@@ -7,10 +7,10 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
-import Ejercicio07TratamientoCSV.CarreraFinal;
-import Ejercicio07TratamientoCSV.SprintCarrera;
-import Ejercicio07TratamientoCSV.TipoCarrera;
+import Ejercicio07TratamientoCSV.Conductor;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
@@ -42,7 +42,13 @@ public class Ejercicio08TratamientoXML {
                 } else {
                     position = Integer.parseInt(linea.get(1));
                 }
-                carreraFinalResult.add(new CarreraFinal(linea.get(0), position, Integer.parseInt(linea.get(2)), linea.get(3), linea.get(4), Integer.parseInt(linea.get(5)), Integer.parseInt(linea.get(6)), linea.get(7), Float.parseFloat(linea.get(8)), !linea.get(9).equals("No"), linea.get(10)));
+                boolean ok = true;
+                for (int i = 0; i < listaCircuitos.size() && ok; i++) {
+                    if (listaCircuitos.get(i).getGpname().equalsIgnoreCase(linea.get(0))) {
+                        carreraFinalResult.add(new CarreraFinal(listaCircuitos.get(i), position, Integer.parseInt(linea.get(2)), linea.get(3), linea.get(4), Integer.parseInt(linea.get(5)), Integer.parseInt(linea.get(6)), linea.get(7), Float.parseFloat(linea.get(8)), !linea.get(9).equals("No"), linea.get(10)));
+                        ok = false;
+                    }
+                }
             }
 
             for (List<String> linea : sprintRaceResult) {
@@ -53,11 +59,30 @@ public class Ejercicio08TratamientoXML {
                 } else {
                     position = Integer.parseInt(linea.get(1));
                 }
-                carreraSprintResult.add(new SprintCarrera(linea.get(0), position, Integer.parseInt(linea.get(2)), linea.get(3), linea.get(4), Integer.parseInt(linea.get(5)), Integer.parseInt(linea.get(6)), linea.get(7), Float.parseFloat(linea.get(8))));
+                boolean ok = true;
+                for (int i = 0; i < listaCircuitos.size() && ok; i++) {
+                    if (listaCircuitos.get(i).getGpname().equalsIgnoreCase(linea.get(0))) {
+                        carreraSprintResult.add(new SprintCarrera(listaCircuitos.get(i), position, Integer.parseInt(linea.get(2)), linea.get(3), linea.get(4), Integer.parseInt(linea.get(5)), Integer.parseInt(linea.get(6)), linea.get(7), Float.parseFloat(linea.get(8))));                        ok = false;
+                    }
+                }
             }
 
             todasLasCarreras.addAll(carreraFinalResult);
             todasLasCarreras.addAll(carreraSprintResult);
+
+            Map<List<String>, Double> mapConductor = todasLasCarreras.stream()
+                    .collect(Collectors.groupingBy(
+                            p -> Arrays.asList(p.getDriver()),
+                            Collectors.summingDouble(TipoCarrera::getPoints)
+                    ));
+
+            List<Ejercicio07TratamientoCSV.Conductor> listaConductores = mapConductor.entrySet()
+                    .stream()
+                    .map(c -> new Conductor(c.getKey().get(0), c.getValue())).toList();
+
+            System.out.print("Campeon F1: ");
+            listaConductores.stream().sorted((c1, c2) -> Double.compare(c2.getTotalPuntos(), c1.getTotalPuntos())).limit(1).forEach(System.out::println);
+            System.out.println();
 
         } catch (JAXBException e) {
             e.printStackTrace();
