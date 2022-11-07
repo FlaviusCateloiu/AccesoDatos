@@ -113,7 +113,10 @@ public class Ejercicio09TratamientoJSON {
             System.out.println();
 
             System.out.println("---Escuderia con Pilotos de su pais.---");
-            todasLasCarreras.stream().filter(p -> p.getTeam().getBaseCountry().equalsIgnoreCase(p.getDriver().getCountry()) || p.getTeam().getTeam().equalsIgnoreCase(p.getDriver().getTeam())).map(c -> c.getTeam().getTeam()).distinct().forEach(System.out::println);
+            todasLasCarreras.stream()
+                    .filter(p -> p.getTeam().getTeam().equalsIgnoreCase(p.getDriver().getTeam()) && p.getTeam().getBaseCountry().equalsIgnoreCase(p.getDriver().getCountry()) )
+                    .map(c -> c.getTeam().getTeam())
+                    .distinct().forEach(System.out::println);
             System.out.println();
         } catch (JAXBException e) {
             e.printStackTrace();
