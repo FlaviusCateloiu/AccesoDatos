@@ -28,5 +28,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="jakarta.xml.bind.api" level="project" />
     <orderEntry type="library" name="sun.xml.bind.jaxb.impl" level="project" />
+    <orderEntry type="library" name="google.code.gson" level="project" />
   </component>
 </module>
