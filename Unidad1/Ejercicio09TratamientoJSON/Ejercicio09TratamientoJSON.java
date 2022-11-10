@@ -9,9 +9,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Ejercicio09TratamientoJSON {
     public static void main(String[] args) {
@@ -21,6 +20,7 @@ public class Ejercicio09TratamientoJSON {
         List<SprintCarrera> carreraSprintResult = new ArrayList<>();
         List<TipoCarrera> todasLasCarreras = new ArrayList<>();
         int position = 0;
+        boolean ok;
         Path nombreFichero = Path.of("Unidad1/Ejercicio08TratamientoXML","formula1_2021season_calendar.xml");
         JAXBContext context = null;
         Circuito circuito = null;
@@ -50,7 +50,7 @@ public class Ejercicio09TratamientoJSON {
                 } else {
                     position = Integer.parseInt(linea.get(1));
                 }
-                boolean ok = true;
+                ok = true;
                 for (int i = 0; i < listaPilotos.size() && ok; i++) {
                     if (listaPilotos.get(i).getDriver().equalsIgnoreCase(linea.get(3))) {
                         piloto = listaPilotos.get(i);
@@ -82,7 +82,7 @@ public class Ejercicio09TratamientoJSON {
                 } else {
                     position = Integer.parseInt(linea.get(1));
                 }
-                boolean ok = true;
+                ok = true;
                 for (int i = 0; i < listaPilotos.size() && ok; i++) {
                     if (listaPilotos.get(i).getDriver().equalsIgnoreCase(linea.get(3))) {
                         piloto = listaPilotos.get(i);
@@ -113,15 +113,39 @@ public class Ejercicio09TratamientoJSON {
             System.out.println();
 
             System.out.println("---Escuderia con Pilotos de su pais.---");
-            carreraFinalResult.stream()
+            /*carreraFinalResult.stream()
                     .filter(p -> p.getTeam().getBaseCountry().equalsIgnoreCase(p.getDriver().getCountry()) )
                     .map(c -> c.getTeam().getTeam())
-                    .distinct().forEach(System.out::println);
+                    .distinct().forEach(System.out::println);*/
+            List<String> listaEscuPilotosPais = new ArrayList<>();
+            Map<String, String> hashMapEquiposCiudad = new HashMap<>();
+            for (Teams t : listaEquipos) {
+                hashMapEquiposCiudad.put(t.getTeam(), t.getBaseCountry());
+            }
+            for (Map.Entry<String, String> e : hashMapEquiposCiudad.entrySet()) {
+                ok = true;
+                for (int i = 0; i < listaPilotos.size() && ok; i++) {
+                    if (listaPilotos.get(i).getTeam().equalsIgnoreCase(e.getKey())) {
+                        if (listaPilotos.get(i).getCountry().equalsIgnoreCase(e.getValue())) {
+                            listaEscuPilotosPais.add(e.getKey());
+                            ok = false;
+                        }
+                    }
+                }
+            }
+            listaEscuPilotosPais.stream().distinct().forEach(System.out::println);
             System.out.println();
 
             System.out.println("---Suministros de motores en la competición---");
-            listaEquipos.stream().map(Teams::getPowerUnit).distinct().forEach(System.out::println);
+            List<String> listaSuministrosEscu = listaEquipos.stream().map(Teams::getPowerUnit).distinct().toList();
+            for (String sM : listaSuministrosEscu) {
+                System.out.print(sM + ": ");
+                listaEquipos.stream().filter(p -> p.getPowerUnit().equalsIgnoreCase(sM)).forEach(p -> System.out.print(p.getTeam() + ", "));
+                System.out.println();
+            }
             System.out.println();
+
+
         } catch (JAXBException e) {
             e.printStackTrace();
         }
