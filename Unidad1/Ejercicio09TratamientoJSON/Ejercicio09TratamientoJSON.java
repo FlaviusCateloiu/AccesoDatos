@@ -100,6 +100,7 @@ public class Ejercicio09TratamientoJSON {
                 for (int i = 0; i < listaCircuitos.size() && ok; i++) {
                     if (listaCircuitos.get(i).getGpname().equalsIgnoreCase(linea.get(0))) {
                         carreraSprintResult.add(new SprintCarrera(listaCircuitos.get(i), position, Integer.parseInt(linea.get(2)), piloto, equipo, Integer.parseInt(linea.get(5)), Integer.parseInt(linea.get(6)), linea.get(7), Float.parseFloat(linea.get(8))));                        ok = false;
+                        ok = false;
                     }
                 }
                 ok = true;
@@ -144,6 +145,7 @@ public class Ejercicio09TratamientoJSON {
                 System.out.println();
             }
             System.out.println();
+
 
 
         } catch (JAXBException e) {
