@@ -23,11 +23,13 @@
       <sourceFolder url="file://$MODULE_DIR$/Unidad1/Ejercicio05Serializacion/Ejercicio5.3" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Unidad1/Ejercicio06RandomAccessFile" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Unidad1" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Unidad2" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="jakarta.xml.bind.api" level="project" />
     <orderEntry type="library" name="sun.xml.bind.jaxb.impl" level="project" />
     <orderEntry type="library" name="google.code.gson" level="project" />
+    <orderEntry type="library" name="xerial.sqlite.jdbc" level="project" />
   </component>
 </module>
