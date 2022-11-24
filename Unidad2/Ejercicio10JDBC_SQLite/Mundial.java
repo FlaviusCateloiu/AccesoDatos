@@ -58,7 +58,10 @@ public class Mundial {
                 mapaPilotoMayorTreinta.put(resultadoPilotosMasAnyos.getString("name"), LocalDate.parse(resultadoPilotosMasAnyos.getString("dob"), dateFormat).until(IsoChronology.INSTANCE.dateNow()).getYears());
             }
 
-            mapaPilotoMayorTreinta.entrySet().stream().filter(p -> p.getValue() >= 30).forEach(r -> System.out.println(r.getKey() + "\t" + r.getValue()));
+            mapaPilotoMayorTreinta.entrySet().stream()
+                    .filter(p -> p.getValue() >= 30)
+                    .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+                    .forEach(r -> System.out.println(r.getKey() + "\t" + r.getValue()));
 
             conexion.close();
 
