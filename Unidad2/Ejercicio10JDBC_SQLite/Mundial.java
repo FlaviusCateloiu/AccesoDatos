@@ -2,8 +2,6 @@ package Ejercicio10JDBC_SQLite;
 
 import java.nio.file.Path;
 import java.sql.*;
-import java.time.LocalDate;
-import java.time.chrono.IsoChronology;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -16,6 +14,8 @@ public class Mundial {
 
         PreparedStatement sentencia = null;
 
+        System.out.println("Parte SQLite:");
+        //Parte 1 SQLite.
         try {
             Class.forName("org.sqlite.JDBC");
             Path rutaBaseDatos = Path.of("Unidad2/Ejercicio10JDBC_SQLite/formula1.db");
@@ -27,7 +27,6 @@ public class Mundial {
                     FROM Results 
                     INNER JOIN Drivers 
                         ON Results.DriverID = Drivers.DriverID
-                    GROUP BY Drivers.Name
                     ORDER BY TotalPuntos DESC""";
             sentencia = conexion.prepareStatement(sentenciaClasificacion);
             ResultSet resultadosClasPilotos = sentencia.executeQuery();
@@ -48,7 +47,6 @@ public class Mundial {
             SELECT cast(strftime('%Y.%m%d', 'now') - strftime('%Y.%m%d', DateOfBirth ) as int) AS dob, Name
             FROM Drivers
             WHERE dob >= 30
-            GROUP BY Name
             ORDER BY dob DESC""";
             sentencia = conexion.prepareStatement(sentenciaPilotosMasAnyos);
             ResultSet resultadoPilotosMasAnyos = sentencia.executeQuery();
@@ -81,7 +79,6 @@ public class Mundial {
             SELECT cast(strftime('%Y.%m%d', 'now') - strftime('%Y.%m%d', DateOfBirth ) as int) AS dob, Name
             FROM Drivers
             WHERE dob >= ?
-            GROUP BY Name
             ORDER BY dob DESC""";
             sentencia = conexion.prepareStatement(sentenciaPilotosEdadIntroducido);
             sentencia.setInt(1, minimoEdadDriver);
@@ -94,6 +91,7 @@ public class Mundial {
                 System.out.println(resultadoPilotosEdadIntroducido.getString("name") + "\t" + resultadoPilotosEdadIntroducido.getInt("dob"));
             };
 
+            resultadoPilotosEdadIntroducido.close();
 
             //Crear la Tabla Teams.
             String crearTablaTeams = """
@@ -101,7 +99,7 @@ public class Mundial {
                         Constructor TEXT NOT NULL,
                         Chassis TEXT NOT NULL,
                         PowerUnit TEXT NOT NULL,
-                    PRIMARY KEY ( Constructor ));
+                    PRIMARY KEY ( Constructor ))
                     """;
             String borrarDatosTabla = """
                     DELETE FROM Teams""";
@@ -118,14 +116,67 @@ public class Mundial {
                     ('Scuderia Toro Rosso-Honda', 'STR14', 'Honda RA619H'),
                     ('Williams-Mercedes', 'FW42', 'Mercedes M10 EQ Power+')""";
             sentencia = conexion.prepareStatement(crearTablaTeams);
-            sentencia.execute();
+            sentencia.executeUpdate();
             sentencia = conexion.prepareStatement(borrarDatosTabla);
-            sentencia.execute();
+            sentencia.executeUpdate();
             sentencia = conexion.prepareStatement(introducirDatosTeams);
             sentencia.executeUpdate();
 
             sentencia.close();
             conexion.close();
+        } catch ( Exception e ) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+
+        //Parte 2 MariaDB y AWS.
+        System.out.println("\nParte Maria DB:");
+        String port = "3306";
+        String bbdd = "f1_2019";
+
+        String dbUrl = "jdbc:mariadb://f12019.ci66saah1axn.us-east-1.rds.amazonaws.com:" + port + "/" + bbdd;
+        String usuario = "admin";
+        String passwd = "aadd1234";
+
+        try (Connection conexionMDB = DriverManager.getConnection(dbUrl, usuario, passwd)) {
+            String contenidoMDB1 = """
+                    SELECT SUM(Results.Points) AS TotalPuntos, Drivers.Name 
+                    FROM Results 
+                    INNER JOIN Drivers 
+                        ON Results.DriverID = Drivers.DriverID
+                    ORDER BY TotalPuntos DESC""";
+            PreparedStatement sentenciaMDB = conexionMDB.prepareStatement(contenidoMDB1);
+            ResultSet resultadosMDB1 = sentenciaMDB.executeQuery();
+
+            System.out.println("1. Clasificación final ordenada del mundial de pilotos");
+            System.out.println("Driver\t\t\tTotal Points");
+            System.out.println("-".repeat(30));
+            while (resultadosMDB1.next()) {
+                System.out.println(resultadosMDB1.getString("name") + "\t" + resultadosMDB1.getInt("totalpuntos"));
+            }
+
+            resultadosMDB1.close();
+
+            String contenidoMDB2 = """
+            SELECT TIMESTAMPDIFF(YEAR,DateOfBirth,CURDATE()) AS dob, Name
+            FROM Drivers
+            WHERE TIMESTAMPDIFF(YEAR,DateOfBirth,CURDATE()) >= 30
+            ORDER BY TIMESTAMPDIFF(YEAR,DateOfBirth,CURDATE()) DESC""";
+            sentenciaMDB = conexionMDB.prepareStatement(contenidoMDB2);
+            ResultSet resultadosMDB2 = sentenciaMDB.executeQuery();
+
+            System.out.println("\n2. Pilotos con 30 años o más (a día de hoy), ordenados de mayor a menor edad.");
+
+            System.out.println("Driver\t\t\tYears Driver");
+            System.out.println("-".repeat(30));
+
+            while (resultadosMDB2.next()) {
+                System.out.println(resultadosMDB2.getString("name") + "\t" + resultadosMDB2.getInt("dob"));
+            }
+
+            resultadosMDB2.close();
+            sentenciaMDB.close();
+
         } catch ( Exception e ) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
