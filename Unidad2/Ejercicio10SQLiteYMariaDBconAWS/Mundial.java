@@ -1,4 +1,4 @@
-package Ejercicio10JDBC_SQLite;
+package Ejercicio10SQLiteYMariaDBconAWS;
 
 import java.nio.file.Path;
 import java.sql.*;
