@@ -102,7 +102,7 @@ public class SQLitePilotoDAOImpl implements PilotoDAO {
     }
 
     private Piloto convertToPiloto(ResultSet rs) throws SQLException {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         Escuderia esc = null;
         String escuderia = rs.getString("team");
 

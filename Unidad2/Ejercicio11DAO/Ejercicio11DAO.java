@@ -6,7 +6,6 @@ import Ejercicio11DAO.models.Piloto;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 
 public class Ejercicio11DAO {
     public static void main(String[] args) {
@@ -50,7 +49,7 @@ public class Ejercicio11DAO {
 
         System.out.println("\nInsertar un Piloto");
         System.out.println("-------------------------------");
-        Piloto pil = new Piloto("Marcos Lorenzo", 21, new Escuderia("Seat", "Seat-2019", "Seat 4 Latas"), LocalDate.parse("12/10/1998", DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        Piloto pil = new Piloto("Marcos Lorenzo", 21, new Escuderia("Seat", "Seat-2019", "Seat 4 Latas"), LocalDate.parse("1998-11-23 00:00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         System.out.println(pil);
         mundial.getPilotoDAO().save(pil);
         mundial.getPilotoDAO().findAll().forEach(System.out::println);
