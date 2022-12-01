@@ -1,6 +1,7 @@
 package Ejercicio11DAO.dao.sql;
 import Ejercicio11DAO.dao.DAOManager;
 import Ejercicio11DAO.dao.EscuderiaDAO;
+import Ejercicio11DAO.dao.PilotoDAO;
 
 import java.nio.file.Path;
 import java.sql.Connection;
@@ -8,12 +9,12 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class SQLiteDAOManagerImpl implements DAOManager {
-    final String RUTABASE = Path.of("Unidad02-BBDDRelacionales","EjemploDAO", "db", "formula1.db").toString();
+    final String RUTABASE = Path.of("Unidad2/Ejercicio11DAO/db/formula1.db").toString();
 
     private Connection conexion;
 
     private EscuderiaDAO escuderias = null;
-    // private PilotoDAO pilotos = null;
+    private PilotoDAO pilotos = null;
     // ...
 
     public SQLiteDAOManagerImpl() {
@@ -41,4 +42,14 @@ public class SQLiteDAOManagerImpl implements DAOManager {
         }
         return escuderias;
     }
+
+    @Override
+    public PilotoDAO getPilotoDAO() {
+        if (pilotos == null) {
+            pilotos = new SQLitePilotoDAOImpl(conexion, escuderias.findAll());
+        }
+        return pilotos;
+    }
+
+
 }
