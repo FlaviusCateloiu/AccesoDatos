@@ -41,6 +41,7 @@ public class Ejercicio11DAO {
         mundial.getEscuderiaDAO().findAll().forEach(System.out::println);
 
 
+
         System.out.println("\nMostrar todos Pilotos");
         System.out.println("-------------------------------");
         mundial.getPilotoDAO().findAll().forEach(System.out::println);
@@ -51,7 +52,7 @@ public class Ejercicio11DAO {
 
         System.out.println("\nInsertar un Piloto");
         System.out.println("-------------------------------");
-        Piloto pil = new Piloto("Marcos Lorenzo", 21, mundial.getEscuderiaDAO().findById("Mercedes"), LocalDate.parse("1998-11-23 00:00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        Piloto pil = new Piloto("Marcos Lorenzo", 21, mundial.getEscuderiaDAO().findById("Mercedes"), LocalDate.parse("1998-11-23", DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         mundial.getPilotoDAO().save(pil);
         mundial.getPilotoDAO().findAll().forEach(System.out::println);
 
@@ -69,6 +70,7 @@ public class Ejercicio11DAO {
         mundial.getPilotoDAO().findAll().forEach(System.out::println);
 
 
+
         System.out.println("\nMostrar todos Circuito");
         System.out.println("-------------------------------");
         mundial.getCircuitoDAO().findAll().forEach(System.out::println);
@@ -79,7 +81,7 @@ public class Ejercicio11DAO {
 
         System.out.println("\nInsertar un Piloto");
         System.out.println("-------------------------------");
-        Circuito circ = new Circuito(99, "Rumania", LocalDate.parse("2019-12-23 00:00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        Circuito circ = new Circuito(99, "Rumania", LocalDate.parse("2019-12-23", DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         mundial.getCircuitoDAO().save(circ);
         mundial.getCircuitoDAO().findAll().forEach(System.out::println);
 
