@@ -4,6 +4,7 @@ import Ejercicio11DAO.dao.sql.SQLiteDAOManagerImpl;
 import Ejercicio11DAO.models.Circuito;
 import Ejercicio11DAO.models.Escuderia;
 import Ejercicio11DAO.models.Piloto;
+import Ejercicio11DAO.models.Resultados;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -64,38 +65,66 @@ public class Ejercicio11DAO {
         mundial.getPilotoDAO().update(pil);
         mundial.getPilotoDAO().findAll().forEach(System.out::println);
 
-        System.out.println("\nBorrar una escudería");
+        System.out.println("\nBorrar un Piloto");
         System.out.println("-------------------------------");
         mundial.getPilotoDAO().deleteById(21);
         mundial.getPilotoDAO().findAll().forEach(System.out::println);
 
 
 
-        System.out.println("\nMostrar todos Circuito");
+        System.out.println("\nMostrar todos Circuitos");
         System.out.println("-------------------------------");
         mundial.getCircuitoDAO().findAll().forEach(System.out::println);
 
-        System.out.println("\nMostrar solo un Piloto");
+        System.out.println("\nMostrar solo un Circuito");
         System.out.println("-------------------------------");
         System.out.println(mundial.getCircuitoDAO().findById(19));
 
-        System.out.println("\nInsertar un Piloto");
+        System.out.println("\nInsertar un Circuito");
         System.out.println("-------------------------------");
         Circuito circ = new Circuito(99, "Rumania", LocalDate.parse("2019-12-23", DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         mundial.getCircuitoDAO().save(circ);
         mundial.getCircuitoDAO().findAll().forEach(System.out::println);
 
-        System.out.println("\nActualizar un Piloto");
+        System.out.println("\nActualizar un Circuito");
         System.out.println("-------------------------------");
         circ.setNombre("Moldova");
         circ.setFechaCircuito(LocalDate.now());
         mundial.getCircuitoDAO().update(circ);
         mundial.getCircuitoDAO().findAll().forEach(System.out::println);
 
-        System.out.println("\nBorrar una escudería");
+        System.out.println("\nBorrar un Circuito");
         System.out.println("-------------------------------");
         mundial.getCircuitoDAO().deleteById(99);
         mundial.getCircuitoDAO().findAll().forEach(System.out::println);
+
+
+
+        System.out.println("\nMostrar todos Resultados");
+        System.out.println("-------------------------------");
+        mundial.getResultadosDAO().findAll().forEach(System.out::println);
+
+        System.out.println("\nMostrar solo un Resultado");
+        System.out.println("-------------------------------");
+        System.out.println(mundial.getResultadosDAO().findById(77, 3));
+
+        System.out.println("\nInsertar un Resultado");
+        System.out.println("-------------------------------");
+        Resultados resultado = new Resultados( mundial.getPilotoDAO().findById(4), mundial.getCircuitoDAO().findById(21), 20, 2);
+        mundial.getResultadosDAO().save(resultado);
+        mundial.getResultadosDAO().findAll().forEach(System.out::println);
+
+        System.out.println("\nActualizar un Resultado");
+        System.out.println("-------------------------------");
+        resultado.setPosicion(30);
+        resultado.setPuntos(6);
+        mundial.getResultadosDAO().update(resultado);
+        mundial.getResultadosDAO().findAll().forEach(System.out::println);
+
+        System.out.println("\nBorrar un Resultado");
+        System.out.println("-------------------------------");
+        mundial.getResultadosDAO().deleteById(4, 21);
+        mundial.getResultadosDAO().findAll().forEach(System.out::println);
 
         mundial.close();
     }

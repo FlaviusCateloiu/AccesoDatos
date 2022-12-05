@@ -1,8 +1,5 @@
 package Ejercicio11DAO.dao.sql;
-import Ejercicio11DAO.dao.CircuitoDAO;
-import Ejercicio11DAO.dao.DAOManager;
-import Ejercicio11DAO.dao.EscuderiaDAO;
-import Ejercicio11DAO.dao.PilotoDAO;
+import Ejercicio11DAO.dao.*;
 
 import java.nio.file.Path;
 import java.sql.Connection;
@@ -17,6 +14,7 @@ public class SQLiteDAOManagerImpl implements DAOManager {
     private EscuderiaDAO escuderias = null;
     private PilotoDAO pilotos = null;
     private CircuitoDAO circuitos = null;
+    private ResultadosDAO resultados = null;
     // ...
 
     public SQLiteDAOManagerImpl() {
@@ -59,6 +57,14 @@ public class SQLiteDAOManagerImpl implements DAOManager {
             circuitos = new SQLiteCircuitoDAOImpl(conexion);
         }
         return circuitos;
+    }
+
+    @Override
+    public ResultadosDAO getResultadosDAO() {
+        if (resultados == null) {
+            resultados = new SQLiteResultadosDAOImpl(conexion, (SQLitePilotoDAOImpl) pilotos, (SQLiteCircuitoDAOImpl) circuitos);
+        }
+        return resultados;
     }
 
 }
