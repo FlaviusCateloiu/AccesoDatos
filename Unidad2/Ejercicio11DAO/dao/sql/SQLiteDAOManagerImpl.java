@@ -1,4 +1,5 @@
 package Ejercicio11DAO.dao.sql;
+import Ejercicio11DAO.dao.CircuitoDAO;
 import Ejercicio11DAO.dao.DAOManager;
 import Ejercicio11DAO.dao.EscuderiaDAO;
 import Ejercicio11DAO.dao.PilotoDAO;
@@ -15,6 +16,7 @@ public class SQLiteDAOManagerImpl implements DAOManager {
 
     private EscuderiaDAO escuderias = null;
     private PilotoDAO pilotos = null;
+    private CircuitoDAO circuitos = null;
     // ...
 
     public SQLiteDAOManagerImpl() {
@@ -46,10 +48,17 @@ public class SQLiteDAOManagerImpl implements DAOManager {
     @Override
     public PilotoDAO getPilotoDAO() {
         if (pilotos == null) {
-            pilotos = new SQLitePilotoDAOImpl(conexion, escuderias.findAll());
+            pilotos = new SQLitePilotoDAOImpl(conexion, (SQLiteEscuderiaDAOImpl) escuderias);
         }
         return pilotos;
     }
 
+    @Override
+    public CircuitoDAO getCircuitoDAO() {
+        if (circuitos == null) {
+            circuitos = new SQLiteCircuitoDAOImpl(conexion);
+        }
+        return circuitos;
+    }
 
 }

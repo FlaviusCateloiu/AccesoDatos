@@ -1,6 +1,7 @@
 package Ejercicio11DAO.dao.sql;
 
-import Ejercicio11DAO.dao.PilotoDAO;
+import Ejercicio11DAO.dao.CircuitoDAO;
+import Ejercicio11DAO.models.Circuito;
 import Ejercicio11DAO.models.Piloto;
 
 import java.sql.Connection;
@@ -12,60 +13,57 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SQLitePilotoDAOImpl implements PilotoDAO {
-    final String FINDALL = "SELECT * FROM Drivers";
-    final String FINDBYID = "SELECT * FROM Drivers WHERE DriverID = ?";
-    final String SAVE = "INSERT INTO Drivers (DriverID, Name, DateOfBirth, Team) VALUES (?, ?, ?, ?)";
-    final String UPDATE = "UPDATE Drivers SET Name = ?, DateOfBirth = ?, Team = ? WHERE DriverID = ?";
-    final String DELETE = "DELETE FROM Drivers WHERE DriverID = ?";
+public class SQLiteCircuitoDAOImpl implements CircuitoDAO {
+    final String FINDALL = "SELECT * FROM Tracks";
+    final String FINDBYID = "SELECT * FROM Tracks WHERE TrackID = ?";
+    final String SAVE = "INSERT INTO Tracks (TrackID, Country, DateOfRace) VALUES (?, ?, ?)";
+    final String UPDATE = "UPDATE Tracks SET Country = ?, DateOfRace = ? WHERE TrackID = ?";
+    final String DELETE = "DELETE FROM Tracks WHERE TrackID = ?";
 
     private Connection conexion = null;
-    private SQLiteEscuderiaDAOImpl escuderias;
 
-    public SQLitePilotoDAOImpl(Connection conexion, SQLiteEscuderiaDAOImpl escuderias) {
+    public SQLiteCircuitoDAOImpl(Connection conexion) {
         this.conexion = conexion;
-        this.escuderias = escuderias;
     }
 
     @Override
-    public List<Piloto> findAll() {
-        List<Piloto> pilotos = new ArrayList<>();
+    public List<Circuito> findAll() {
+        List<Circuito> circuitos = new ArrayList<>();
         try (PreparedStatement sentencia = conexion.prepareStatement(FINDALL);
              ResultSet rs = sentencia.executeQuery()){
             while (rs.next()) {
-                pilotos.add(convertToPiloto(rs));
+                circuitos.add(convertToCircuito(rs));
             }
         } catch ( Exception e ) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-        return pilotos;
+        return circuitos;
     }
 
     @Override
-    public Piloto findById(Integer id) {
-        Piloto piloto = null;
+    public Circuito findById(Integer id) {
+        Circuito circuito = null;
         try (PreparedStatement sentencia = conexion.prepareStatement(FINDBYID)) {
             sentencia.setInt(1, id);
             ResultSet rs = sentencia.executeQuery();
             if (rs.next()) {
-                piloto = convertToPiloto(rs);
+                circuito = convertToCircuito(rs);
             }
             rs.close();
         } catch ( Exception e ) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-        return piloto;
+        return circuito;
     }
 
     @Override
-    public void save(Piloto piloto) {
+    public void save(Circuito circuito) {
         try (PreparedStatement sentencia = conexion.prepareStatement(SAVE)) {
-            sentencia.setInt(1, piloto.getNumero());
-            sentencia.setString(2, piloto.getNombre());
-            sentencia.setString(3, piloto.getFechaNacimiento().toString() + " 00:00:00");
-            sentencia.setString(4, piloto.getEquipo().getNombre());
+            sentencia.setInt(1, circuito.getNumero());
+            sentencia.setString(2, circuito.getNombre());
+            sentencia.setString(3, circuito.getFechaCircuito().toString() + " 00:00:00");
             sentencia.executeUpdate();
         } catch ( Exception e ) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -74,12 +72,11 @@ public class SQLitePilotoDAOImpl implements PilotoDAO {
     }
 
     @Override
-    public void update(Piloto piloto) {
+    public void update(Circuito circuito) {
         try (PreparedStatement sentencia = conexion.prepareStatement(UPDATE)){
-            sentencia.setString(1, piloto.getNombre());
-            sentencia.setString(2, piloto.getFechaNacimiento().toString() + " 00:00:00");
-            sentencia.setString(3, piloto.getEquipo().getNombre());
-            sentencia.setInt(4, piloto.getNumero());
+            sentencia.setString(1, circuito.getNombre());
+            sentencia.setString(2, circuito.getFechaCircuito().toString() + " 00:00:00");
+            sentencia.setInt(3, circuito.getNumero());
             sentencia.executeUpdate();
         } catch ( Exception e ) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -98,9 +95,9 @@ public class SQLitePilotoDAOImpl implements PilotoDAO {
         }
     }
 
-    private Piloto convertToPiloto(ResultSet rs) throws SQLException {
+    private Circuito convertToCircuito(ResultSet rs) throws SQLException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-        return new Piloto(rs.getString("name"), rs.getInt("driverID"), escuderias.findById(rs.getString("team")), LocalDate.parse(rs.getString("dateofbirth"), formatter));
+        return new Circuito(rs.getInt("trackid"), rs.getString("country"), LocalDate.parse(rs.getString("dateofrace"), formatter));
     }
 }
