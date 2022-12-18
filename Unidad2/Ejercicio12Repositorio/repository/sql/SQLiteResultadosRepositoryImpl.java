@@ -4,10 +4,16 @@ import Ejercicio12Repositorio.dao.sql.SQLiteResultadosDAOImpl;
 import Ejercicio12Repositorio.models.Resultados;
 import Ejercicio12Repositorio.repository.ResultadosRepository;
 
+import java.sql.Connection;
 import java.util.List;
 
 public class SQLiteResultadosRepositoryImpl implements ResultadosRepository {
     private SQLiteResultadosDAOImpl resultadosDAOImpl;
+    private Connection conexion = null;
+
+    public SQLiteResultadosRepositoryImpl(Connection conexion) {
+        this.conexion = conexion;
+    }
     @Override
     public List<Resultados> findAll() {
         return resultadosDAOImpl.findAll();
